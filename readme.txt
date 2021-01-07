@@ -1,0 +1,3 @@
+AIDLClient和AIDLServer是实验两个App之间的Binder通信
+
+AIDLdemo3 是实验在一个APP两个进程之间的 binder 通信
