@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AsyncTaskTestActivity">
+
+    <Button
+        android:id="@+id/btn_download_img"
+        android:text="Download Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </Button>
+
+    <Button
+        android:id="@+id/btn_cancel_download"
+        android:text="Cancel Download"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </Button>
+
+    <ProgressBar
+        android:id="@+id/pgb_download_progress"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ProgressBar>
+
+    <ImageView
+        android:id="@+id/imgv_download_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ImageView>
+</LinearLayout>
