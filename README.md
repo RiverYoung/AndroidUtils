@@ -3,7 +3,7 @@ Summary of some testing and development tools related Android.
 
 
 
-AIDL ：Android AIDL demo；
+AIDL ：[Android AIDL demo](http://www.riveryoung.cn/2021/01/07/Android-AIDL/#more)；
 
 Utils：AndroidUtils 、ShellUtils；
 
