@@ -23,9 +23,9 @@ if (0 == commandResult.result){
 
 
 
-HandlerTestDemo ：
+HandlerDemo ：
 
-[MainActivity.java](https://github.com/RiverYoung/AndroidUtils/blob/master/HandlerTestDemo/app/src/main/java/com/riveryoung/handlertestdemo/MainActivity.java) 分别使用了 Handler、runOnUiThread 和 HandlerThread 完成 UI 的更新；
+[MainActivity.java](https://github.com/RiverYoung/AndroidUtils/blob/master/HandlerTestDemo/app/src/main/java/com/riveryoung/handlertestdemo/MainActivity.java) 分别使用了 Handler（sendMessage、post）、runOnUiThread 和 HandlerThread 完成 UI 的更新；
 
 [AsyncTaskTestActivity.java](https://github.com/RiverYoung/AndroidUtils/blob/master/HandlerTestDemo/app/src/main/java/com/riveryoung/handlertestdemo/AsyncTaskTestActivity.java) 则使用 AsyncTask 完成异步下载图片的例子，展示 AsyncTask 的使用方法；
 

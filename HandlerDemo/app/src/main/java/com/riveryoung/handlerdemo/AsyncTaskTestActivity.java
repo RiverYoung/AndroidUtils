@@ -1,4 +1,4 @@
-package com.riveryoung.handlertestdemo;
+package com.riveryoung.handlerdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;

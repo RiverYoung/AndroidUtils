@@ -1,4 +1,4 @@
-package com.riveryoung.handlertestdemo;
+package com.riveryoung.handlerdemo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button btn_change_text;
 
+    private Button btn_change_text_post;
+
     private Button btn_change_text_runOnUiThread;
 
     public static final int UPDATE_TEXT = 0;
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    private Handler mHandler_post = new Handler();
+
     private Button btn_change_text_handlerThread;
 
     private HandlerThread mHandlerThread = new HandlerThread("myHandlerThread");
@@ -57,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_change_text = (Button) findViewById(R.id.btn_change_text);
         btn_change_text.setOnClickListener(this);
 
+        btn_change_text_post = (Button) findViewById(R.id.btn_change_text_post);
+        btn_change_text_post.setOnClickListener(this);
+
         btn_change_text_runOnUiThread = (Button) findViewById(R.id.btn_change_text_runOnUiThread);
         btn_change_text_runOnUiThread.setOnClickListener(this);
 
@@ -68,11 +75,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
-
                 Log.d(TAG, "handleMessage and thread id : " + mHandlerThread.getId());
                 final int what = msg.what;
-                runOnUiThread(new Runnable() {
 
+                //获取到通知信息后，在子线程通知主线程更新 UI
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Log.d(TAG, "runOnUiThread thread id : " + Thread.currentThread().getId());
@@ -81,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         };
-
     }
 
     @Override
@@ -94,10 +100,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        //在子线程中执行耗时任务
                         Log.d(TAG, "执行耗时任务的子线程id ： " + Thread.currentThread().getId());
-                        Message msg = Message.obtain();
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        //子线程执行完耗时任务后，通过 sendMessage 通知主线程更新 UI 界面
+                        Message msg = Message.obtain(); //推荐使用 obtain
                         msg.what = UPDATE_TEXT;
                         mHandler.sendMessage(msg);
+                    }
+                }).start();
+                break;
+
+            case R.id.btn_change_text_post:
+                Log.d(TAG,"on Clicked change text post");
+
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        //在子线程中执行耗时任务
+                        Log.d(TAG, "执行耗时任务的子线程id ： " + Thread.currentThread().getId());
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        //子线程执行完耗时任务后，通过 post 通知主线程更新 UI 界面
+                        mHandler_post.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                // 主线程更新 UI
+                                Log.d(TAG, "主线程更新 UI, 线程id ： " + Thread.currentThread().getId());
+                                tv_name.setText("My name is river, Nice to meet you, post sir");
+                            }
+                        });
                     }
                 }).start();
                 break;
@@ -105,19 +146,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_change_text_runOnUiThread:
                 Log.d(TAG, "onClick change text by runOnUiThread");
 
-                //使用 runOnUiThread 方法更新UI，可以省去使用 handler 需要的大量冗余代码
-                //包括新建子线程并发送message， 然后再在主线程的 handler 进行 handleMessage
-                runOnUiThread(new Runnable(){
+                new Thread(new Runnable() {
+
                     @Override
                     public void run() {
-                        Log.d(TAG, "执行 runOnUiThread 的线程 ： " + Thread.currentThread().getId());
-                        tv_name.setText("My name is river, Nice to meet you!");
+                        //在子线程中执行耗时任务
+                        Log.d(TAG, "执行耗时任务的子线程id ： " + Thread.currentThread().getId());
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        //使用 runOnUiThread 方法更新UI，可以省去使用 handler 需要的大量冗余代码
+                        //包括新建子线程并发送message， 然后再在主线程的 handler 进行 handleMessage
+                        runOnUiThread(new Runnable(){
+                            @Override
+                            public void run() {
+                                Log.d(TAG, "执行 runOnUiThread 的线程 ： " + Thread.currentThread().getId());
+                                tv_name.setText("My name is river, Nice to meet you!");
+                            }
+                        });
                     }
-                });
+                }).start();
                 break;
 
             case R.id.btn_change_text_handlerThread:
                 Log.d(TAG, "onClick change text by HandlerThread");
+                mHandler3.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //在子线程中执行耗时任务
+                        Log.d(TAG, "执行耗时任务的子线程id ： " + Thread.currentThread().getId());
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                //通知 HandlerThread 绑定的子线程，且信息为 1
                 mHandler3.sendMessage(mHandler3.obtainMessage(1));
                 break;
             default:
