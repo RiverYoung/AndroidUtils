@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void addUpLoadImgTask() {
         Log.d(TAG, "addUpLoadImgTask");
-        String imgPath = "/sdcard/Resource/1.png";
+        String imgPath = "/sdcard/3.png";
         myIntentService.startUpLoadImg(this, imgPath);
     }
 
